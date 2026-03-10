@@ -1,0 +1,11 @@
+You need to identify JUST ONE real-world subtopic related to: {{$topic}}.
+
+To find a unique angle, use the following anchors as thematic lenses or inspiration: {{$anchors}}.
+Constraint: The subtopic must be grounded in factual reality. Do not invent historical events, technologies, or phenomena that do not exist. If the anchors are difficult to combine, you may focus on just ONE anchor that provides the most interesting and factual intersection with {{$topic}}.
+
+The subtopic should be specific (e.g., a specific technology, event, or niche discipline) and allow for an engaging, insightful narrative.
+Max 40 words.
+
+Format:
+Topic: {{$topic}}
+Fact: [Your factual subtopic]

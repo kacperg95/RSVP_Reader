@@ -1,0 +1,9 @@
+﻿Write an educational text about: {{$niche_topic}}.
+Language: {{$language}}.
+
+STYLE RULES:
+- Avoid long introductions. Start directly with the topic.
+- Aim for 300 to 500 words. Do not force it to be longer.
+- Keep the tone engaging and informative.
+- Use only simple language structure.
+- Strictly forbidden to use bullet points, numbered lists, or "firstly/secondly" step-by-step breakdowns.

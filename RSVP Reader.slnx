@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Minimal API/Minimal API.csproj" Id="2a362485-8df0-4b50-b252-3651b071d768" />
+  <Project Path="WEB/WEB.csproj" Id="f7d5c939-7c17-412b-bfe1-eeda41808b78" />
+</Solution>

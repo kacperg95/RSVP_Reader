@@ -1,0 +1,47 @@
+﻿@if (IsVisible)
+{
+    <div class="modal-backdrop-custom">
+        <div class="modal-content-custom">
+
+            <textarea class="text-editor-area"
+                      @bind="InputText"
+                      @bind:event="oninput"
+                      placeholder="I like trains..."></textarea>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="color: @(WordCount > WordLimit ? "red" : "gray")">
+                    Words: @WordCount / @WordLimit
+                </span>
+
+                <div class="footer-row">
+                    <button class="btn-main btn-cancel" @onclick="Close">Cancel</button>
+                    <button class="btn-main btn-save"
+                            @onclick="Submit"
+                            disabled=@IsButtonDisabled>
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public EventCallback<string> OnConfirm { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    private const int WordLimit = 2000;
+    private string InputText { get; set; } = "";
+    private int WordCount => string.IsNullOrWhiteSpace(InputText) ? 0
+        : InputText.Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries).Length;
+
+    private async Task Submit()
+    {
+        await OnConfirm.InvokeAsync(InputText);
+        InputText = "";
+    }
+
+    private async Task Close() => await OnClose.InvokeAsync();
+    private bool IsButtonDisabled => WordCount > WordLimit || string.IsNullOrWhiteSpace(InputText);
+}

@@ -1,0 +1,225 @@
+﻿.reader-container {
+    background-color: #000;
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Georgia', serif;
+    outline: none;
+}
+
+.word-display {
+    font-size: 3rem;
+    position: relative;
+    top: -28px;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    letter-spacing: 0.03em;
+}
+
+.word-left {
+    flex: 1;
+    text-align: right;
+}
+
+.word-center {
+    color: #ff4d4d;
+}
+
+.word-right {
+    flex: 1;
+    text-align: left;
+    margin-right: -0.03em;
+}
+
+.guide-lines {
+    margin-top: 20px;
+    width: 80%;
+    max-width: 800px;
+}
+
+.top-guide, .bottom-guide {
+    border-top: 3px solid #333;
+    height: 70px;
+    position: relative;
+}
+
+    .top-guide::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        width: 3px;
+        height: 25px;
+        background: #333;
+    }
+
+    .bottom-guide::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: -28px;
+        width: 3px;
+        height: 25px;
+        background: #333;
+    }
+
+.controls {
+    gap: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.controls-vertical {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 40px;
+    gap: 5px;
+    max-width: 350px;
+}
+
+
+button, .input {
+    border-radius: 8px;
+    padding: 0 20px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.btn-primary {
+    background-color: #fff;
+    color: #000;
+}
+
+    .btn-primary:hover {
+        background-color: #ff4d4d;
+        color: #fff;
+    }
+
+.btn-secondary {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #333;
+    box-sizing: border-box;
+}
+
+    .btn-secondary:hover {
+        border-color: #666;
+    }
+
+.start-stop {
+    width: 90px;
+}
+
+.input {
+    background: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 10px 15px;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .input:focus {
+        border-color: #ff4d4d;
+        background: #252525;
+    }
+
+    .input::placeholder {
+        color: #555;
+    }
+
+.wpm-composite-input {
+    height: 42px;
+    background: #1a1a1a;
+    border: 2px solid #333;
+    box-sizing: border-box;
+    border-radius: 8px;
+    padding: 0 12px;
+    transition: border-color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+    .wpm-composite-input:focus-within {
+        border-color: #ff4d4d;
+    }
+
+    .wpm-composite-input input {
+        background: transparent;
+        border: none;
+        color: #fff;
+        width: 45px;
+        font-family: 'Courier New', monospace;
+        font-size: 1rem;
+        outline: none;
+        text-align: center;
+    }
+
+    .wpm-composite-input .input-suffix {
+        color: #666;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        margin-left: 8px;
+    }
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-suffix {
+    color: #888;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.controls-vertical {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    gap: 12px; 
+    width: 100%;
+    max-width: 320px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.controls-legend {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.75rem;
+    color: #666; 
+    font-family: monospace; 
+    text-align: center;
+    opacity: 0.7;
+}
+
+    .controls-legend strong {
+        color: #888;
+    }

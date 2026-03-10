@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "description": "Generates long-form RSVP-formatted text with strict punctuation rules.",
+  "execution_settings": {
+    "default": {
+      "temperature": 1
+    }
+  },
+  "input_variables": [
+    {
+      "name": "niche_topic",
+      "description": "The specific sub-topic",
+      "default": ""
+    },
+    {
+      "name": "language",
+      "description": "Target language for the final output",
+      "default": "English"
+    }
+  ]
+}

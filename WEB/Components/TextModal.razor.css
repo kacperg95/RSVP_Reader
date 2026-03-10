@@ -1,0 +1,98 @@
+﻿.modal-backdrop-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(2px);
+}
+
+.modal-content-custom {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    padding: 24px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    border: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+}
+
+    .modal-content-custom h3 {
+        margin-top: 0;
+        color: #fff;
+        font-size: 1.5rem;
+    }
+
+.text-editor-area {
+    min-height: 400px;
+    padding: 12px;
+    background-color: #2d2d2d;
+    color: #fff;
+    border: 2px solid #333;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: vertical;
+    outline: none;
+    font-family: 'Courier New', monospace;
+    background: #1a1a1a;
+    margin-bottom: 3px;
+}
+
+    .text-editor-area:focus {
+        border-color: #ff4d4d;
+        background: #252525;
+    }
+
+.footer-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-main {
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+}
+
+.btn-save {
+    background-color: #fff;
+    color: #000;
+}
+
+    .btn-save:hover:not(:disabled) {
+        background-color: #ff4d4d;
+        color: #fff;
+    }
+
+    .btn-save:disabled {
+        background-color: #3a3a3a;
+        color: #777;
+        cursor: not-allowed;
+    }
+
+.btn-cancel {
+    background-color: #333;
+    color: #ccc;
+}
+
+    .btn-cancel:hover {
+        background-color: #444;
+        color: #fff;
+    }
+
+.word-count-text {
+    font-size: 0.9rem;
+}

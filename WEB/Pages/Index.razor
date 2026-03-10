@@ -1,0 +1,226 @@
+﻿@page "/"
+@using System.Timers
+@using System.Collections.Concurrent
+@using Blazor.Sonner
+@using Blazor.Sonner.Common
+@using Blazor.Sonner.Services
+@inject ApiClient _apiClient
+@inject ToastService Toast
+
+<Toaster Position="ToastPosition.TopRight" />
+<TextModal IsVisible="isModalOpen"
+           OnConfirm="LoadTextFromTextModal"
+           OnClose="() => isModalOpen = false" />
+
+<div class="reader-container" @onkeydown="HandleKeyDown" tabindex="0">
+    <div class="guide-lines">
+        <div class="top-guide"></div>
+        <div class="word-display">
+            @if (currentWord != null)
+            {
+                <span class="word-left">@leftPart</span>
+                <span class="word-center">@middlePart</span>
+                <span class="word-right">@rightPart</span>
+            }
+        </div>
+        <div class="bottom-guide"></div>
+    </div>
+
+    <div class="controls">
+        <button class="@(IsReading ? "btn-secondary" : "btn-primary") start-stop" @onclick="ToggleReading" @onkeydown:preventDefault>
+            @((IsReading) ? "STOP" : "START")
+        </button>
+        <div class="wpm-composite-input">
+            <input type="number" @bind="wpm" @onkeydown:stopPropagation="true" @bind:event="oninput" />
+            <span class="input-suffix">Words per minute</span>
+        </div>
+    </div>
+
+    <div class="controls-vertical">
+        <div class="input-group">
+            <input type="text" @bind="topic" @onkeydown:stopPropagation="true" placeholder="Topic (eg. biology)..." class="input" />
+        </div>
+        <div class="input-group">
+            <input type="text" @bind="language" @onkeydown:stopPropagation="true" placeholder="Language (eg. english)..." class="input" />
+        </div>
+
+        <button class="btn-secondary" @onclick="LoadTextFromAi" @onkeydown:preventDefault disabled="@isLoading">
+            @if (isLoading)
+            {
+                <span>Loading...</span>
+            }
+            else
+            {
+                <span>Load with AI</span>
+            }
+        </button>
+        <div class="text-center">OR</div>
+        <button class="btn-secondary" disabled="@isLoading" @onclick="() => isModalOpen = true">
+            Load your own text
+        </button>
+    </div>
+
+    <div class="controls-legend">
+        <span><strong>Space</strong> – start/stop</span>
+        <span><strong>Left</strong> – move back</span>
+        <span><strong>+/-</strong> or <strong>↑/↓</strong> – adjust speed</span>
+    </div>
+
+</div>
+
+@code {
+
+    //Form
+    private string topic = "";
+    private string language = "";
+    private bool isLoading = false;
+
+    //Reading
+    private List<string> allWords = [];
+    private int currentIndex = 0; private string currentWord = "";
+    private int wpm = 300;
+    private Timer? timer;
+    private int defaultInterval => 60000 / wpm;
+    private bool IsReading => timer?.Enabled == true;
+    private readonly object _lock = new();
+
+    private string leftPart = "", middlePart = "", rightPart = "";
+    private bool isModalOpen = false;
+
+    private void StartReading()
+    {
+        if (timer?.Enabled == true || allWords.Count == 0) return;
+        if (currentIndex == allWords.Count) currentIndex = 0;
+
+        timer = new Timer(defaultInterval);
+        timer.Elapsed += OnTimerElapsed;
+        timer.Start();
+    }
+
+    private void StopReading()
+    {
+        timer?.Dispose();
+        timer = null;
+    }
+
+    private void ToggleReading()
+    {
+        if (IsReading) StopReading();
+        else StartReading();
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void ResetReader()
+    {
+        StopReading();
+        currentIndex = 0;
+        if (allWords.Count > 0)
+        {
+            currentWord = allWords[0];
+            (leftPart, middlePart, rightPart) = OptimalRecognitionPoint.Split(currentWord);
+        }
+        StateHasChanged();
+    }
+
+    private void OnTimerElapsed(object? sender, ElapsedEventArgs e)
+    {
+        lock (_lock)
+        {
+            if (currentIndex < allWords.Count)
+            {
+                UpdateCurrentWord();
+                currentIndex++;
+                InvokeAsync(StateHasChanged);
+
+                timer!.Interval = currentWord[^1] switch
+                {
+                    '.' or '?' or '!' => defaultInterval * 2.5,
+                    ';' or ':' => defaultInterval * 2.0,
+                    ',' => defaultInterval * 1.75,
+                    _ => defaultInterval
+                };
+
+                timer.Start();
+            }
+            else
+            {
+                ToggleReading();
+            }
+        }
+    }
+
+    private void UpdateCurrentWord()
+    {
+        if (allWords.Count == 0) return;
+        currentWord = allWords[currentIndex];
+        (leftPart, middlePart, rightPart) = OptimalRecognitionPoint.Split(currentWord);
+    }
+
+    private void MoveBack()
+    {
+        lock (_lock)
+        {
+            currentIndex = Math.Max(0, currentIndex - 10);
+            UpdateCurrentWord();
+            StateHasChanged();
+        }
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case " ":
+                ToggleReading();
+                break;
+
+            case "ArrowLeft":
+                MoveBack();
+                break;
+
+            case "ArrowUp" or "+":
+                wpm += 25;
+                break;
+
+            case "ArrowDown" or "-":
+                wpm = Math.Max(25, wpm - 25);
+                break;
+        }
+    }
+
+    private async Task LoadTextFromAi()
+    {
+        if (string.IsNullOrWhiteSpace(topic)) return;
+
+        isLoading = true;
+        allWords.Clear();
+        currentIndex = 0;
+        currentWord = "";
+        leftPart = middlePart = rightPart = "";
+        StateHasChanged();
+
+        await foreach (var word in _apiClient.GetStreamingTextAsync(language, topic))
+        {
+            lock (_lock)
+            {
+                allWords.Add(word);
+            }
+
+            await InvokeAsync(StateHasChanged);
+            if (isLoading)
+            {
+                isLoading = false;
+                Toast.Success("Text loaded successfully!");
+            }
+        }
+    }
+
+    private void LoadTextFromTextModal(string text)
+    {
+        isModalOpen = false;
+        allWords = text.Split([' ', '\n', '\r'], StringSplitOptions.RemoveEmptyEntries).ToList();
+        currentIndex = 0;
+    }
+
+}

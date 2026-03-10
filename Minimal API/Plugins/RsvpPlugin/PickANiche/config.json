@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "execution_settings": {
+    "default": {
+      "temperature": 1,
+      "max_completion_tokens": 600
+    }
+  },
+  "input_variables": [
+    {
+      "name": "topic",
+      "description": "The general category (e.g., Rome, Biology, Space)",
+      "default": ""
+    },
+    {
+      "name": "anchors",
+      "description": "Additional randomness",
+      "default": ""
+    }
+  ]
+}
