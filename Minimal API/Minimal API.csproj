@@ -13,8 +13,10 @@
     <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.72.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Plugins\RsvpPlugin\PickANiche\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Update="Plugins\**\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
 </Project>

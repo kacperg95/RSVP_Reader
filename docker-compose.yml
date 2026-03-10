@@ -1,0 +1,30 @@
+services:
+  api-service:
+    build:
+      context: .
+      dockerfile: "Minimal API/Dockerfile"
+    container_name: rsvp-api
+    ports:
+      - "5000:8080"
+    environment:
+      - AI__ApiKey=${AI_API_KEY}
+    networks:
+      - rsvp-network
+    restart: always
+
+  web-app:
+    build:
+      context: .
+      dockerfile: "WEB/Dockerfile"
+    container_name: rsvp-web
+    ports:
+      - "80:80"
+    depends_on:
+      - api-service
+    networks:
+      - rsvp-network
+    restart: always
+
+networks:
+  rsvp-network:
+    driver: bridge

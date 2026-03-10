@@ -55,7 +55,7 @@ builder.Services.AddTransient(sp =>
     var kernelBuilder = Kernel.CreateBuilder();
     kernelBuilder.AddOpenAIChatCompletion(
         modelId: "gpt-5-nano",
-        apiKey: builder.Configuration["Gemini:ApiKey"] ?? throw new InvalidOperationException("Gemini API key is not configured.")
+        apiKey: builder.Configuration["AI:ApiKey"] ?? throw new InvalidOperationException("AI API key is not configured.")
     );
 
     var kernel = kernelBuilder.Build();
