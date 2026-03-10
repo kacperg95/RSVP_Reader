@@ -59,7 +59,8 @@ builder.Services.AddTransient(sp =>
     );
 
     var kernel = kernelBuilder.Build();
-    kernel.ImportPluginFromPromptDirectory("Plugins/RsvpPlugin");
+    var pluginsPath = Path.Combine(AppContext.BaseDirectory, "Plugins", "RsvpPlugin");
+    kernel.ImportPluginFromPromptDirectory(pluginsPath);
     return kernel;
 });
 
