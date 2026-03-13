@@ -7,7 +7,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://204.168.152.107:5000") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://rsvp-api.nonstack.dev") });
 builder.Services.AddScoped<ApiClient>();
 builder.Services.AddSonner();
 
