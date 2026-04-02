@@ -4,12 +4,11 @@ services:
       context: .
       dockerfile: "Minimal API/Dockerfile"
     container_name: rsvp-api
-    ports:
-      - "5000:8080"
     environment:
       - AI__ApiKey=${AI_API_KEY}
     networks:
-      - rsvp-network
+      - private-network
+      - npm-network
     restart: always
 
   web-app:
@@ -17,14 +16,19 @@ services:
       context: .
       dockerfile: "WEB/Dockerfile"
     container_name: rsvp-web
-    ports:
-      - "5001:80"
     depends_on:
       - api-service
     networks:
-      - rsvp-network
+      - npm-network
+
     restart: always
 
 networks:
-  rsvp-network:
-    driver: bridge
+  private-network:
+    external: true
+    name: private-network
+
+  npm-network:
+    external: true
+    name: npm-network
+
